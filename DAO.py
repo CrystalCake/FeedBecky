@@ -6,14 +6,19 @@ PASSWORD = "1234"
 PROF_TABLE = "users"
 VORLESUNG_TABLE = ""
 
+PROF_db = pymysql.connect(IP_ADDRESS, LOGIN, PASSWORD, PROF_TABLE)
+PROF_cursor = PROF_db.cursor()
 
-
-db = pymysql.connect("localhost", "admin", "1234", "users")
-curs= db.cursor()
+VORLESUNG_db = pymysql.connect(IP_ADDRESS, LOGIN, PASSWORD, PROF_TABLE)
+VORLESUNG_cursor = VORLESUNG_db.cursor()
 
 
 def read_prof():
-
+    PROF_cursor.execute("SELECT * FROM user where name=%s", [text])
+    records = PROF_cursor.fetchall()
+    for row in records:
+        PROF_cursor.execute("SELECT * FROM Vorlesung WHERE profID=%s", [row[0]])
+        vorlesungRec = PROF_cursor.fetchall()
     return 0;
 
 def create_vorlesung():
