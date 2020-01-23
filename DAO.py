@@ -1,5 +1,3 @@
-import pymysql
-
 IP_ADDRESS = "localhost"
 LOGIN = "admin"
 PASSWORD = "1234"
