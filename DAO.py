@@ -1,4 +1,4 @@
-
+import pymysql
 
 IP_ADDRESS = "localhost"
 LOGIN = "admin"
