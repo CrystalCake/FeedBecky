@@ -8,8 +8,11 @@ BEWERTUNGEN_TABLE = "Bewertung"
 PROF_db = pymysql.connect(IP_ADDRESS, LOGIN, PASSWORD, PROF_TABLE)
 PROF_cursor = PROF_db.cursor()
 
-VORLESUNG_db = pymysql.connect(IP_ADDRESS, LOGIN, PASSWORD, PROF_TABLE)
+VORLESUNG_db = pymysql.connect(IP_ADDRESS, LOGIN, PASSWORD, VORLESUNG_TABLE)
 VORLESUNG_cursor = VORLESUNG_db.cursor()
+
+BEWERTUNG_db = pymysql.connect(IP_ADDRESS, LOGIN, PASSWORD, BEWERTUNGEN_TABLE)
+BEWERTUNG_cursor = BEWERTUNG_db.cursor()
 
 
 def read_prof(prof_name):
@@ -20,11 +23,11 @@ def read_prof(prof_name):
     return 0;
 
 def create_vorlesung():
-
+        VORLESUNG_cursor.execute("INSERT INTO vorlesung () VALUES ()")
     return 0;
 
 def update_vorlesung(vorlesungs_ID):
-
+        VORLESUNG_cursor.execute("UPDATE vorlesung SET c1=v1 WHERE id=%s", [vorlesungs_ID])
     return 0;
 
 def get_prof_name(prof_ID):
@@ -47,5 +50,5 @@ def get_bewertungen(vorlesungs_ID):
     return 0;
 
 def post_bewertung(bewertung, vorlesungs_ID):
-
+    VORLESUNG_cursor.execute("INSERT INTO bewertung () VALUES ()",[bewertung, vorlesungs_ID])
     return 0;
