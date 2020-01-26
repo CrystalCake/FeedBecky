@@ -1,6 +1,5 @@
 import sys
-import time
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore
 from datetime import datetime, timedelta
 
 class Screens(QtWidgets.QWidget):
@@ -38,10 +37,7 @@ class Screens(QtWidgets.QWidget):
         layout = QtWidgets.QGridLayout()
 
         #Willkommensbild einbinden
-        welcomePic = QtWidgets.QLabel()
-        welcomePixmap = QtGui.QPixmap("welcome.png")
-        welcomePic.setPixmap(welcomePixmap)
-        layout.addWidget(welcomePic)
+        self.LoginWindow.setStyleSheet("background-image: url(welcome.png);")
 
         #Ansicht zusammenstellen
         self.LoginWindow.setLayout(layout)
@@ -50,8 +46,9 @@ class Screens(QtWidgets.QWidget):
 
 
     def showVorlesungsScreen(self, name):
-        # Login Fenster schließen
+        # Andere Fenster schließen
         self.LoginWindow.hide()
+        self.BewertungsWindow.hide()
 
         # Vorlesungsfenster erstellen
         self.VorlesungWindow.setMinimumHeight(480)
@@ -88,6 +85,14 @@ class Screens(QtWidgets.QWidget):
         self.timer.timeout.connect(self.updateTimeLabel)
         self.timer.start(1000)
 
+    def showBewertungsScreen(self):
+        # Andere Fenster schließen
+        self.LoginWindow.hide()
+        self.VorlesungWindow.hide()
+
+        # Vorlesungsfenster erstellen
+        self.VorlesungWindow.setMinimumHeight(480)
+        self.VorlesungWindow.setMinimumWidth(800)
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
