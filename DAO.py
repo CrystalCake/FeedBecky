@@ -28,11 +28,15 @@ def read_prof(prof_id):
 def create_vorlesung(prof_id, lec_name):
     cursor.execute("INSERT INTO Vorlesung (name, profID, raum) VALUES (%s, %s, %s)", [lec_name, prof_id, raum])
     db.commit()
-
-    return 0;
+    cursor.execute("SELECT id FROM Vorlesung "
+                   "WHERE name = %s "
+                   "AND profID = %s "
+                   "AND raum = %s"
+                   "AND startDatum = endDatum", [lec_name, prof_id, raum])
+    return cursor.fetchall()[0][0]
 
 def update_vorlesung(vorlesungs_ID):
-    cursor.execute("UPDATE vorlesung SET (endDatum = datetime.now()) WHERE id=%s", [vorlesungs_ID])
+    cursor.execute("UPDATE Vorlesung SET endDatum = current_timestamp() WHERE id=%s", [vorlesungs_ID])
     db.commit()
     return 0;
 
