@@ -24,10 +24,11 @@ def read_prof(prof_id):
         return row[0]
     return 0;
 
-
+//current_timestamp()
 def create_vorlesung(prof_id, lec_name):
     cursor.execute("INSERT INTO Vorlesung (name, profID, raum) VALUES (%s, %s, %s)", [lec_name, prof_id, raum])
     db.commit()
+
     return 0;
 
 def update_vorlesung(vorlesungs_ID):
