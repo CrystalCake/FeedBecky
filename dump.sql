@@ -15,33 +15,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Table structure for table `Bewertung`
---
 
-DROP TABLE IF EXISTS `Bewertung`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Bewertung` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `wert` int(11) DEFAULT NULL,
-  `datum` datetime NOT NULL DEFAULT current_timestamp(),
-  `vorlesungsID` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `vorlesungsID` (`vorlesungsID`),
-  CONSTRAINT `vorlesungsID` FOREIGN KEY (`vorlesungsID`) REFERENCES `Vorlesung` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Bewertung`
---
-
-LOCK TABLES `Bewertung` WRITE;
-/*!40000 ALTER TABLE `Bewertung` DISABLE KEYS */;
-INSERT INTO `Bewertung` VALUES (1,1,'2020-01-14 00:00:00',1),(2,1,'2020-01-14 08:00:00',1);
-/*!40000 ALTER TABLE `Bewertung` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `Vorlesung`
@@ -109,3 +83,32 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2020-01-25 10:55:46
+
+
+--
+-- Table structure for table `Bewertung`
+--
+
+DROP TABLE IF EXISTS `Bewertung`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Bewertung` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `wert` int(11) DEFAULT NULL,
+  `datum` datetime NOT NULL DEFAULT current_timestamp(),
+  `vorlesungsID` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `vorlesungsID` (`vorlesungsID`),
+  CONSTRAINT `vorlesungsID` FOREIGN KEY (`vorlesungsID`) REFERENCES `Vorlesung` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Bewertung`
+--
+
+LOCK TABLES `Bewertung` WRITE;
+/*!40000 ALTER TABLE `Bewertung` DISABLE KEYS */;
+INSERT INTO `Bewertung` VALUES (1,1,'2020-01-14 00:00:00',1),(2,1,'2020-01-14 08:00:00',1);
+/*!40000 ALTER TABLE `Bewertung` ENABLE KEYS */;
+UNLOCK TABLES;
