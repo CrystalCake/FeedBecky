@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets, QtCore, QtChart
 from datetime import datetime, timedelta
 import time
 from mfrc522 import SimpleMFRC522
+from DAO import *
 
 class Screens(QtWidgets.QWidget):
 
@@ -53,7 +54,7 @@ class Screens(QtWidgets.QWidget):
         self.logikThread.start()
 
 
-    def showVorlesungsScreen(self, name):
+    def showVorlesungsScreen(self, name, vorlesungsID):
         # Andere Fenster schließen
         self.LoginWindow.hide()
         self.BewertungsWindow.hide()
@@ -94,7 +95,7 @@ class Screens(QtWidgets.QWidget):
         self.timer.timeout.connect(self.updateTimeLabel)
         self.timer.start(1000)
         
-        self.logikEndThread = LogikEnde()
+        self.logikEndThread = LogikEnde(vorlesungsID)
         self.logikEndThread.signalEnd.connect(self.showBewertungsScreen)
         self.logikEndThread.start()
 
@@ -160,7 +161,7 @@ def main():
     sys.exit(app.exec_())
 
 class Logik(QtCore.QThread):
-    signal = QtCore.pyqtSignal(str)
+    signal = QtCore.pyqtSignal(str, int)
 
     def __init__(self):
         QtCore.QThread.__init__(self)
@@ -173,20 +174,26 @@ class Logik(QtCore.QThread):
             id, self.text = self.reader.read()
             print(id)
             print(self.text)
-            time.sleep(0.1)
+            time.sleep(0.4)
         except KeyboardInterrupt:
             GIPO.cleanup()
-
-        self.signal.emit(self.text)
+        
+        prof = read_prof(int(self.text))
+        
+        vorlesung = create_vorlesung(int(self.text), "Internet of Things")
+        
+        self.signal.emit(prof[1], vorlesung)
         
 class LogikEnde(QtCore.QThread):
     signalEnd = QtCore.pyqtSignal(tuple, int)
 
-    def __init__(self):
+    def __init__(self, vorlesung):
         QtCore.QThread.__init__(self)
         self.reader = SimpleMFRC522()
         self.bewertungen = (2, 3, 2, 1, 5)
         self.maxWert = 5
+        self.vorlesung = vorlesung
+        print (vorlesung)
 
     def run(self):
         try:
@@ -198,7 +205,9 @@ class LogikEnde(QtCore.QThread):
         except KeyboardInterrupt:
             GIPO.cleanup()
 
-        self.signalEnd.emit(self.bewertungen, self.maxWert)    
+        self.bewertungen = get_bewertungen(24)
+        print(self.bewertungen)
+        self.signalEnd.emit(self.bewertungen, max(self.bewertungen))    
         
 if __name__ == '__main__':
     main()
