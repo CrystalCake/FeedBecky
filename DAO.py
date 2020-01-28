@@ -10,8 +10,8 @@ class DAO():
         #Variablen initialisieren
 
         self.IP_ADDRESS = "http://192.168.137.140/phpmyadmin/"
-        self.LOGIN = "admin"
-        self.PASSWORD = "1234"
+        self.LOGIN = "gast"
+        self.PASSWORD = "SECRET"
         self.DB = "users"
         self.raum = "9-108"
 
