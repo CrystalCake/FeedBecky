@@ -27,10 +27,12 @@ def read_prof(prof_id):
 
 def create_vorlesung(prof_id, lec_name):
     cursor.execute("INSERT INTO Vorlesung (name, profID, raum) VALUES (%s, %s, %s)", [lec_name, prof_id, raum])
+    db.commit()
     return 0;
 
 def update_vorlesung(vorlesungs_ID):
     cursor.execute("UPDATE vorlesung SET (endDatum = datetime.now()) WHERE id=%s", [vorlesungs_ID])
+    db.commit()
     return 0;
 
 def get_prof_name(prof_ID):
@@ -46,10 +48,11 @@ def get_vorlesungen(prof_ID):
     return 0;
 
 def get_bewertungen(vorlesungs_ID):
-    cursor.execute("SELECT * FROM Bewertung WHERE vorlesungID=%s", [vorlesungs_ID])
+    cursor.execute("SELECT * FROM Bewertung WHERE vorlesungsID=%s", [vorlesungs_ID])
     return cursor.fetchall()
     return 0;
 
 def post_bewertung(wert, vorlesungs_ID):
-    cursor.execute("INSERT INTO bewertung (wert, vorlesungsID) VALUES (%s, %s)", [wert, vorlesungs_ID])
+    cursor.execute("INSERT INTO Bewertung (wert, vorlesungsID) VALUES (%s, %s)", [wert, vorlesungs_ID])
+    db.commit()
     return 0;
