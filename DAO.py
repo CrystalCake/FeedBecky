@@ -1,31 +1,23 @@
 from datetime import datetime
+import pymysql
 
 class DAO():
 
     def __init__(self):
-        #super().__init__()
-
         #Variablen initialisieren
-        self.IP_ADDRESS = "localhost"
+        self.IP_ADDRESS = "http://192.168.137.140/phpmyadmin/"
         self.LOGIN = "admin"
         self.PASSWORD = "1234"
-        self.PROF_TABLE = "users"
-        self.VORLESUNG_TABLE = "Vorlesung"
-        self.BEWERTUNGEN_TABLE = "Bewertung"
+        self.DB = "users"
         self.raum = "9-108"
 
-        self.PROF_db = pymysql.connect(IP_ADDRESS, LOGIN, PASSWORD, PROF_TABLE)
-        self.PROF_cursor = PROF_db.cursor()
 
-        self.VORLESUNG_db = pymysql.connect(IP_ADDRESS, LOGIN, PASSWORD, VORLESUNG_TABLE)
-        self.VORLESUNG_cursor = VORLESUNG_db.cursor()
-
-        self.BEWERTUNG_db = pymysql.connect(IP_ADDRESS, LOGIN, PASSWORD, BEWERTUNGEN_TABLE)
-        self.BEWERTUNG_cursor = BEWERTUNG_db.cursor()
+        self.connection = pymysql.connect(self.IP_ADDRESS, self.LOGIN, self.PASSWORD, self.DB)
+        self.cursor = PROF_db.cursor()
 
 
     def read_prof(self, prof_id):
-        self.PROF_cursor.execute("SELECT * FROM user where name=%s", prof_name)
+        self.PROF_cursor.execute("SELECT * FROM user where id=%s", [prof_id])
         records = self.PROF_cursor.fetchall()
         for row in records:
             return row[0]
