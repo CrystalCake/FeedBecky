@@ -21,8 +21,8 @@ class DAO():
 
 
     def read_prof(self, prof_id):
-        self.PROF_cursor.execute("SELECT * FROM user where id=%s", [prof_id])
-        records = self.PROF_cursor.fetchall()
+        self.cursor.execute("SELECT * FROM user where id=%s", [prof_id])
+        records = self.cursor.fetchall()
         for row in records:
             return row[0]
         return 0;
