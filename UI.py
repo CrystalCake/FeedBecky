@@ -32,6 +32,7 @@ class Screens(QtWidgets.QWidget):
         #LoginFenster erstellen
         self.LoginWindow.setMinimumHeight(480)
         self.LoginWindow.setMinimumWidth(800)
+        self.LoginWindow.showFullScreen()
 
         #Layout festlegen
         layout = QtWidgets.QGridLayout()
@@ -52,6 +53,7 @@ class Screens(QtWidgets.QWidget):
         # Vorlesungsfenster erstellen
         self.VorlesungWindow.setMinimumHeight(480)
         self.VorlesungWindow.setMinimumWidth(800)
+        self.VorlesungWindow.showFullScreen()
         self.VorlesungWindow.setStyleSheet("background-image: url(start.png);")
 
         # Layout festlegen
@@ -92,6 +94,7 @@ class Screens(QtWidgets.QWidget):
         # Vorlesungsfenster erstellen
         self.BewertungsWindow.setMinimumHeight(480)
         self.BewertungsWindow.setMinimumWidth(800)
+        self.BewertungsWindow.showFullScreen()
         
         #Layout festlegen
         layout = QtWidgets.QGridLayout()
