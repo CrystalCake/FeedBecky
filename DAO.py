@@ -16,10 +16,8 @@ cursor = db.cursor()
 
 def read_prof(prof_id):
     cursor.execute("SELECT * FROM user where id=%s", [prof_id])
-    records = cursor.fetchall()
-    for row in records:
-        return row[0]
-    return 0;
+    return cursor.fetchone()
+
 
 ##current_timestamp()
 def create_vorlesung(prof_id, lec_name):
@@ -61,9 +59,33 @@ def get_open_vorlesungs_id(raum):
         return 0
 
 def get_bewertungen(vorlesungs_ID):
-    cursor.execute("SELECT * FROM Bewertung WHERE vorlesungsID=%s", [vorlesungs_ID])
-    return cursor.fetchall()
-    return 0;
+    cursor.execute("SELECT COUNT(*) FROM Bewertung WHERE vorlesungsID=%s AND wert=1", [vorlesungs_ID])
+    records = cursor.fetchall()
+    for row in records:
+        wert_1 = row[0]
+        
+    cursor.execute("SELECT COUNT(*) FROM Bewertung WHERE vorlesungsID=%s AND wert=2", [vorlesungs_ID])
+    records = cursor.fetchall()
+    for row in records:
+        wert_2 = row[0]
+        
+    cursor.execute("SELECT COUNT(*) FROM Bewertung WHERE vorlesungsID=%s AND wert=3", [vorlesungs_ID])
+    records = cursor.fetchall()
+    for row in records:
+        wert_3 = row[0]
+        
+    cursor.execute("SELECT COUNT(*) FROM Bewertung WHERE vorlesungsID=%s AND wert=4", [vorlesungs_ID])
+    records = cursor.fetchall()
+    for row in records:
+        wert_4 = row[0]
+        
+    
+    cursor.execute("SELECT COUNT(*) FROM Bewertung WHERE vorlesungsID=%s AND wert=5", [vorlesungs_ID])
+    records = cursor.fetchall()
+    for row in records:
+        wert_5 = row[0]
+        
+    return (wert_1, wert_2, wert_3, wert_4, wert_5)
 
 def post_bewertung(wert, vorlesungs_ID):
     cursor.execute("INSERT INTO Bewertung (wert, vorlesungsID) VALUES (%s, %s)", [wert, vorlesungs_ID])
