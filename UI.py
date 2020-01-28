@@ -1,6 +1,9 @@
 import sys
 from PyQt5 import QtWidgets, QtCore, QtChart
 from datetime import datetime, timedelta
+import time
+import RPi.GIPO as GIPO
+from mfrc522 import SimpleMFRC522
 
 class Screens(QtWidgets.QWidget):
 
@@ -43,6 +46,10 @@ class Screens(QtWidgets.QWidget):
         #Ansicht zusammenstellen
         self.LoginWindow.setLayout(layout)
         self.LoginWindow.show()
+
+        self.logikThread = Logik()
+        self.logikThread.signal.connect(self.VorlesungWindow)
+        self.logikThread.start()
 
 
     def showVorlesungsScreen(self, name):
@@ -147,6 +154,23 @@ def main():
     screens = Screens()
     sys.exit(app.exec_())
 
+class Logik(QtCore.QThread):
+    signal = QtCore.pyqtSignal(str)
+
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+
+    def run(self):
+        try:
+            print("no Card")
+            id, text = reader.read()
+            print(id)
+            print(text)
+            time.sleep(0.1)
+        except KeyboardInterrupt:
+            GIPO.cleanup()
+
+        self.signal.emit("Decker")
 if __name__ == '__main__':
     main()
 
