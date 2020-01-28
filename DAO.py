@@ -9,7 +9,7 @@ class DAO():
     def __init__(self):
         #Variablen initialisieren
 
-        self.IP_ADDRESS = "http://192.168.137.140/phpmyadmin/"
+        self.IP_ADDRESS = "192.168.137.140"
         self.LOGIN = "gast"
         self.PASSWORD = "SECRET"
         self.DB = "users"
