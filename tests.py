@@ -1,14 +1,11 @@
-#tests
+ # Modul sys wird importiert:
+import sys
 
-#from DAO import DAO
+# Iteration über sämtliche Argumente:
+for eachArg in sys.argv:
+     print(eachArg)
 
-print("Hello World!")
-#dao = DAO();
-#prof = dao.read_prof(1)
-#print(prof)
 
-import pymysql
-import pymysql.cursors
-
-# Connect to the database
-connection = pymysql.connect("192.168.137.140", "admin", "1234", "users")
+print(sys.argv);
+print(sys.argv[0]);
+print(sys.argv);
