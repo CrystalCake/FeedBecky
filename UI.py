@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtChart
 from datetime import datetime, timedelta
 
 class Screens(QtWidgets.QWidget):
@@ -42,7 +42,6 @@ class Screens(QtWidgets.QWidget):
         #Ansicht zusammenstellen
         self.LoginWindow.setLayout(layout)
         self.LoginWindow.show()
-        self.showVorlesungsScreen("Decker(Testversion)")
 
 
     def showVorlesungsScreen(self, name):
@@ -85,14 +84,60 @@ class Screens(QtWidgets.QWidget):
         self.timer.timeout.connect(self.updateTimeLabel)
         self.timer.start(1000)
 
-    def showBewertungsScreen(self):
+    def showBewertungsScreen(self, bewertungen, maxWert):
         # Andere Fenster schließen
         self.LoginWindow.hide()
         self.VorlesungWindow.hide()
 
         # Vorlesungsfenster erstellen
-        self.VorlesungWindow.setMinimumHeight(480)
-        self.VorlesungWindow.setMinimumWidth(800)
+        self.BewertungsWindow.setMinimumHeight(480)
+        self.BewertungsWindow.setMinimumWidth(800)
+        
+        #Layout festlegen
+        layout = QtWidgets.QGridLayout()
+        
+        #Sets erstellen (unterteilt nach Noten)
+        self.set = QtChart.QBarSet ('Gut')
+        self.set1 = QtChart.QBarSet ('Okay')
+        self.set2 = QtChart.QBarSet ('Zu Langsam')
+        self.set3 = QtChart.QBarSet ('Zu Schnell')
+        self.set4 = QtChart.QBarSet ('Zu Kompliziert')
+        
+        self.set.append(bewertungen[0])
+        self.set1.append(bewertungen[1])
+        self.set2.append(bewertungen[2])
+        self.set3.append(bewertungen[3])
+        self.set4.append(bewertungen[4])
+        
+        #Einzelne Graphen erstellen und mit Sets verknüpfen
+        self.series = QtChart.QBarSeries()
+        self.series.append(self.set)
+        self.series.append(self.set1)
+        self.series.append(self.set2)
+        self.series.append(self.set3)
+        self.series.append(self.set4)
+        
+        #Chart initialiseren und Start Animation festlegen
+        self.chart = QtChart.QChart()
+        self.chart.addSeries(self.series)
+        self.chart.setTitle("Bewertungen")
+        self.chart.setAnimationOptions(QtChart.QChart.SeriesAnimations)
+        
+        #Achsen erstellen und formatieren
+        achseX = QtChart.QBarCategoryAxis()
+        achseY = QtChart.QValueAxis()
+        achseY.setRange(0,maxWert)
+        
+        #Ansicht zusammenstellen und anzeigen
+        self.chart.addAxis(achseX, QtCore.Qt.AlignBottom)
+        self.chart.addAxis(achseY, QtCore.Qt.AlignLeft)
+        self.chart.legend().setVisible(True)
+        self.chart.legend().setAlignment(QtCore.Qt.AlignBottom)
+        chartView = QtChart.QChartView(self.chart)
+        layout.addWidget(chartView)
+        self.BewertungsWindow.setLayout(layout)
+        self.BewertungsWindow.show()
+        
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
