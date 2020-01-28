@@ -1,4 +1,5 @@
 from datetime import datetime
+import pymysql
 
 import pymysql
 
@@ -6,24 +7,22 @@ import pymysql
 class DAO():
 
     def __init__(self):
-        #super().__init__()
-
         #Variablen initialisieren
-        self.IP_ADDRESS = "localhost"
-        self.LOGIN = "guest"
-        self.PASSWORD = "SECRET"
-        self.USER = "users"
-        self.VORLESUNG_TABLE = "Vorlesung"
-        self.BEWERTUNGEN_TABLE = "Bewertung"
+
+        self.IP_ADDRESS = "http://192.168.137.140/phpmyadmin/"
+        self.LOGIN = "admin"
+        self.PASSWORD = "1234"
+        self.DB = "users"
         self.raum = "9-108"
 
-        self.db = pymysql.connect(self.IP_ADDRESS, self.LOGIN, self.PASSWORD, self.USER)
+
+        self.db = pymysql.connect(self.IP_ADDRESS, self.LOGIN, self.PASSWORD, self.DB)
         self.cursor = self.db.cursor()
 
 
     def read_prof(self, prof_id):
-        self.cursor.execute("SELECT * FROM user where name=%s", prof_name)
-        records = self.cursor.fetchall()
+        self.PROF_cursor.execute("SELECT * FROM user where id=%s", [prof_id])
+        records = self.PROF_cursor.fetchall()
         for row in records:
             return row[0]
         return 0;
