@@ -6,9 +6,6 @@ import pymysql
 
 from mfrc522 import SimpleMFRC522
 
-db = pymysql.connect("localhost", "admin", "1234", "users")
-curs= db.cursor()
-
 reader = SimpleMFRC522()
 
 try:

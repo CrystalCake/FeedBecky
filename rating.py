@@ -12,6 +12,7 @@ raum = '9-108'
 try:
     while(True):
         vorlesungsID = get_open_vorlesungs_id(raum)
+        print("VorlesungsID = " + str(vorlesungsID))
         if vorlesungsID == 0:
             print('no running course')
         else:
