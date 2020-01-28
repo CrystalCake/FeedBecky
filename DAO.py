@@ -49,6 +49,17 @@ def get_vorlesungen(prof_ID):
     return cursor.fetchall()
     return 0;
 
+def get_open_vorlesungs_id(raum):
+    cursor.execute("SELECT id FROM Vorlesung WHERE startDatum = endDatum AND raum=%s",[str(raum)])
+#    cursor.execute("SELECT id FROM Vorlesung"
+#                   "WHERE raum = %s"
+#                   "AND startDatum = endDatum", [raum])
+    records = cursor.fetchall()
+    if records.__len__() > 0:
+        return records[0][0]
+    else:
+        return 0
+
 def get_bewertungen(vorlesungs_ID):
     cursor.execute("SELECT * FROM Bewertung WHERE vorlesungsID=%s", [vorlesungs_ID])
     return cursor.fetchall()
