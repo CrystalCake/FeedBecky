@@ -1,8 +1,8 @@
+import RPi.GPIO as GPIO
 import sys
 from PyQt5 import QtWidgets, QtCore, QtChart
 from datetime import datetime, timedelta
 import time
-import RPi.GIPO as GIPO
 from mfrc522 import SimpleMFRC522
 
 class Screens(QtWidgets.QWidget):
@@ -35,7 +35,7 @@ class Screens(QtWidgets.QWidget):
         #LoginFenster erstellen
         self.LoginWindow.setMinimumHeight(480)
         self.LoginWindow.setMinimumWidth(800)
-        self.LoginWindow.showFullScreen()
+        #self.LoginWindow.showFullScreen()
 
         #Layout festlegen
         layout = QtWidgets.QGridLayout()
@@ -47,8 +47,9 @@ class Screens(QtWidgets.QWidget):
         self.LoginWindow.setLayout(layout)
         self.LoginWindow.show()
 
+        #Logik Thread starten
         self.logikThread = Logik()
-        self.logikThread.signal.connect(self.VorlesungWindow)
+        self.logikThread.signal.connect(self.showVorlesungsScreen)
         self.logikThread.start()
 
 
@@ -60,14 +61,14 @@ class Screens(QtWidgets.QWidget):
         # Vorlesungsfenster erstellen
         self.VorlesungWindow.setMinimumHeight(480)
         self.VorlesungWindow.setMinimumWidth(800)
-        self.VorlesungWindow.showFullScreen()
+        #self.VorlesungWindow.showFullScreen()
         self.VorlesungWindow.setStyleSheet("background-image: url(start.png);")
 
         # Layout festlegen
         layout = QtWidgets.QGridLayout()
 
         #Label erstellen
-        self.nameLabel = QtWidgets.QLabel("Hallo Herr " + name)
+        self.nameLabel = QtWidgets.QLabel("Hallo Prof. " + name)
         self.timeLabel = QtWidgets.QLabel("Start der Vorlesung: " + datetime.now().strftime("%H:%M"))
         self.zeitLabel = QtWidgets.QLabel("Vorlesung starten...")
 
@@ -92,6 +93,10 @@ class Screens(QtWidgets.QWidget):
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.updateTimeLabel)
         self.timer.start(1000)
+        
+        self.logikEndThread = LogikEnde()
+        self.logikEndThread.signalEnd.connect(self.showBewertungsScreen)
+        self.logikEndThread.start()
 
     def showBewertungsScreen(self, bewertungen, maxWert):
         # Andere Fenster schließen
@@ -101,7 +106,7 @@ class Screens(QtWidgets.QWidget):
         # Vorlesungsfenster erstellen
         self.BewertungsWindow.setMinimumHeight(480)
         self.BewertungsWindow.setMinimumWidth(800)
-        self.BewertungsWindow.showFullScreen()
+        #self.BewertungsWindow.showFullScreen()
         
         #Layout festlegen
         layout = QtWidgets.QGridLayout()
@@ -159,18 +164,42 @@ class Logik(QtCore.QThread):
 
     def __init__(self):
         QtCore.QThread.__init__(self)
+        self.reader = SimpleMFRC522()
+        self.text = ""
 
     def run(self):
         try:
             print("no Card")
-            id, text = reader.read()
+            id, self.text = self.reader.read()
+            print(id)
+            print(self.text)
+            time.sleep(0.1)
+        except KeyboardInterrupt:
+            GIPO.cleanup()
+
+        self.signal.emit(self.text)
+        
+class LogikEnde(QtCore.QThread):
+    signalEnd = QtCore.pyqtSignal(tuple, int)
+
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+        self.reader = SimpleMFRC522()
+        self.bewertungen = (2, 3, 2, 1, 5)
+        self.maxWert = 5
+
+    def run(self):
+        try:
+            print("no Card")
+            id, text = self.reader.read()
             print(id)
             print(text)
             time.sleep(0.1)
         except KeyboardInterrupt:
             GIPO.cleanup()
 
-        self.signal.emit("Decker")
+        self.signalEnd.emit(self.bewertungen, self.maxWert)    
+        
 if __name__ == '__main__':
     main()
 
