@@ -4,10 +4,12 @@ import RPi.GPIO as GPIO
 import time
 
 from DAO import *
+from gpiozero import LED
 from mfrc522 import SimpleMFRC522
 
 reader = SimpleMFRC522()
 raum = '9-108'
+led = LED(21)
 
 try:
     while(True):
@@ -18,6 +20,9 @@ try:
         else:
             print('no Card')
             id, rating = reader.read()
+            led.on()
+            time.sleep(0.5)
+            led.off();
             try:
                 rating = int(rating);
             except ValueError:
