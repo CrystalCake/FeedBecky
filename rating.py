@@ -22,8 +22,8 @@ try:
                 rating = int(rating);
             except ValueError:
                 continue;
-            print("transponder id ="+id)
-            print("rating = "+rating)
+            print("transponder id ="+str(id))
+            print("rating = "+str(rating))
             post_bewertung(int(rating), vorlesungsID)
         time.sleep(2)
 #Übergabe an Interface
