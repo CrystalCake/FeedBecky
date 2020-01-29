@@ -11,6 +11,7 @@ raum = "9-108"
 
 
 db = pymysql.connect(IP_ADDRESS, LOGIN, PASSWORD, DB)
+db.autocommit(True)
 cursor = db.cursor()
 
 
@@ -22,7 +23,7 @@ def read_prof(prof_id):
 ##current_timestamp()
 def create_vorlesung(prof_id, lec_name):
     cursor.execute("INSERT INTO Vorlesung (name, profID, raum) VALUES (%s, %s, %s)", [lec_name, prof_id, raum])
-    db.commit()
+    #db.commit()
     cursor.execute("SELECT id FROM Vorlesung "
                    "WHERE name = %s "
                    "AND profID = %s "
@@ -32,7 +33,7 @@ def create_vorlesung(prof_id, lec_name):
 
 def update_vorlesung(vorlesungs_ID):
     cursor.execute("UPDATE Vorlesung SET endDatum = current_timestamp() WHERE id=%s", [vorlesungs_ID])
-    db.commit()
+    #db.commit()
     return 0;
 
 def get_prof_name(prof_ID):
@@ -46,6 +47,17 @@ def get_vorlesungen(prof_ID):
     cursor.execute("SELECT * FROM Vorlesung WHERE id=%s", [prof_ID])
     return cursor.fetchall()
     return 0;
+
+def get_open_vorlesungs_id(raum):
+    cursor.execute("SELECT id FROM Vorlesung WHERE startDatum = endDatum AND raum=%s",[str(raum)])
+#    cursor.execute("SELECT id FROM Vorlesung"
+#                   "WHERE raum = %s"
+#                   "AND startDatum = endDatum", [raum])
+    records = cursor.fetchall()
+    if records.__len__() > 0:
+        return records[0][0]
+    else:
+        return 0
 
 def get_bewertungen(vorlesungs_ID):
     cursor.execute("SELECT COUNT(*) FROM Bewertung WHERE vorlesungsID=%s AND wert=1", [vorlesungs_ID])
@@ -74,10 +86,15 @@ def get_bewertungen(vorlesungs_ID):
     for row in records:
         wert_5 = row[0]
     print(vorlesungs_ID)
-    print(wert_1, wert_2, wert_3, wert_4, wert_5)    
+    print(wert_1, wert_2, wert_3, wert_4, wert_5)
+
+    #cursor.execute('SELECT COUNT(*) FROM Bewertung WHERE vorlesungsID=72 GROUP BY wert')
+    #result = cursor.fetchall()
+    #return [i[0] for i in result]
+
     return (wert_1, wert_2, wert_3, wert_4, wert_5)
 
 def post_bewertung(wert, vorlesungs_ID):
     cursor.execute("INSERT INTO Bewertung (wert, vorlesungsID) VALUES (%s, %s)", [wert, vorlesungs_ID])
-    db.commit()
+    #db.commit()
     return 0;
