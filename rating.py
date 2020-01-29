@@ -25,7 +25,7 @@ try:
             print("transponder id ="+str(id))
             print("rating = "+str(rating))
             post_bewertung(int(rating), vorlesungsID)
-        time.sleep(2)
+        time.sleep(0.75)
 #Übergabe an Interface
 
 except KeyboardInterrupt:
