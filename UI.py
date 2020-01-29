@@ -33,6 +33,10 @@ class Screens(QtWidgets.QWidget):
 
 
     def showLoginScreen(self):
+        #Andere Screens schließen
+        self.BewertungsWindow.close()
+        self.VorlesungWindow.close()
+        
         #LoginFenster erstellen
         self.LoginWindow.setMinimumHeight(480)
         self.LoginWindow.setMinimumWidth(800)
@@ -56,8 +60,8 @@ class Screens(QtWidgets.QWidget):
 
     def showVorlesungsScreen(self, name, vorlesungsID):
         # Andere Fenster schließen
-        self.LoginWindow.hide()
-        self.BewertungsWindow.hide()
+        self.LoginWindow.close()
+        self.BewertungsWindow.close()
 
         # Vorlesungsfenster erstellen
         self.VorlesungWindow.setMinimumHeight(480)
@@ -101,8 +105,8 @@ class Screens(QtWidgets.QWidget):
 
     def showBewertungsScreen(self, bewertungen, maxWert):
         # Andere Fenster schließen
-        self.LoginWindow.hide()
-        self.VorlesungWindow.hide()
+        self.LoginWindow.close()
+        self.VorlesungWindow.close()
 
         # Vorlesungsfenster erstellen
         self.BewertungsWindow.setMinimumHeight(480)
@@ -154,12 +158,18 @@ class Screens(QtWidgets.QWidget):
         self.BewertungsWindow.setLayout(layout)
         self.BewertungsWindow.show()
         
+        self.logikReThread = LogikRestart()
+        self.logikReThread.signalRestart.connect(self.showLoginScreen)
+        self.logikReThread.start()
+        
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
     screens = Screens()
     sys.exit(app.exec_())
-
+    
+    
+#Login abfrage - Erkennen des Professors und start der Vorlesung
 class Logik(QtCore.QThread):
     signal = QtCore.pyqtSignal(str, int)
 
@@ -170,11 +180,11 @@ class Logik(QtCore.QThread):
 
     def run(self):
         try:
+            time.sleep(2)
             print("no Card")
             id, self.text = self.reader.read()
             print(id)
             print(self.text)
-            time.sleep(0.4)
         except KeyboardInterrupt:
             GIPO.cleanup()
         
@@ -183,7 +193,8 @@ class Logik(QtCore.QThread):
         vorlesung = create_vorlesung(int(self.text), "Internet of Things")
         
         self.signal.emit(prof[1], vorlesung)
-        
+
+#Beenden der Vorlesung und abfragen der Bewertung
 class LogikEnde(QtCore.QThread):
     signalEnd = QtCore.pyqtSignal(tuple, int)
 
@@ -198,11 +209,11 @@ class LogikEnde(QtCore.QThread):
 
     def run(self):
         try:
+            time.sleep(5)
             print("no Card")
             id, text = self.reader.read()
             print(id)
             print(text)
-            time.sleep(0.1)
         except KeyboardInterrupt:
             GIPO.cleanup()
 
@@ -211,7 +222,27 @@ class LogikEnde(QtCore.QThread):
         self.bewertungen = get_bewertungen(int(self.vorlesung))
         print(self.bewertungen)
         print(self.vorlesung)
-        self.signalEnd.emit(self.bewertungen, max(self.bewertungen))    
+        self.signalEnd.emit(self.bewertungen, max(self.bewertungen))
+        
+        
+class LogikRestart(QtCore.QThread):
+    signalRestart= QtCore.pyqtSignal()
+    
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+        self.reader = SimpleMFRC522()
+        
+    def run(self):
+        try:
+            time.sleep(5)
+            print("no Card")
+            id, text = self.reader.read()
+            print(id)
+            print(text)
+        except KeyboardInterrupt:
+            GIPO.cleanup()
+            
+        sys.exit()      
         
 if __name__ == '__main__':
     main()
