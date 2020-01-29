@@ -18,6 +18,10 @@ try:
         else:
             print('no Card')
             id, rating = reader.read()
+            try:
+                rating = int(rating);
+            except ValueError:
+                continue;
             print("transponder id ="+id)
             print("rating = "+rating)
             post_bewertung(int(rating), vorlesungsID)
