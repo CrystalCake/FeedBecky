@@ -84,7 +84,8 @@ def get_bewertungen(vorlesungs_ID):
     records = cursor.fetchall()
     for row in records:
         wert_5 = row[0]
-        
+    print(vorlesungs_ID)
+    print(wert_1, wert_2, wert_3, wert_4, wert_5)    
     return (wert_1, wert_2, wert_3, wert_4, wert_5)
 
 def post_bewertung(wert, vorlesungs_ID):

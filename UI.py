@@ -191,9 +191,10 @@ class LogikEnde(QtCore.QThread):
         QtCore.QThread.__init__(self)
         self.reader = SimpleMFRC522()
         self.bewertungen = (2, 3, 2, 1, 5)
+        print(self.bewertungen)
         self.maxWert = 5
         self.vorlesung = vorlesung
-        print (vorlesung)
+        print (self.vorlesung)
 
     def run(self):
         try:
@@ -205,8 +206,11 @@ class LogikEnde(QtCore.QThread):
         except KeyboardInterrupt:
             GIPO.cleanup()
 
-        self.bewertungen = get_bewertungen(24)
+
+        update_vorlesung(int(self.vorlesung))
+        self.bewertungen = get_bewertungen(int(self.vorlesung))
         print(self.bewertungen)
+        print(self.vorlesung)
         self.signalEnd.emit(self.bewertungen, max(self.bewertungen))    
         
 if __name__ == '__main__':
