@@ -25,10 +25,11 @@ Um die Python-Skripte zu starten werden einige Libraries benötigt.
 
 
 ### Einrichtung der MySQL - Datenbank
-Nachdem sie die MariaDB installiert haben muss der SQL-Dumb importiert werden. Dann müssen Sie die DAO.py auf ihren DB Nutzer anpassen oder den Nutzer "gast" mit dem Passwort "SECRET" anlegen. 
+Nachdem sie die MariaDB installiert haben muss der SQL-Dumb importiert werden. Dann müssen Sie die DAO.py auf ihren DB Nutzer anpassen oder den Nutzer "gast" mit dem Passwort "SECRET" anlegen. Zudem sollten noch Einträge für Professoren in der MySQL hinterlegt werden, da ansonsten die Datenbasis fehlt.
 
-### Einrichtung der Raspberry Pi's
-Als erstes müssen Sie sich entscheiden ob welcher der Pi's als "Professoren PI" und welcher als "Bewertungs PI" genutzt wird. Dementsprechend werden unterschiedliche Skripte gestartet. Auf dem "Professoren PI" starten Sie UI.py
+### Einrichtung der Raspberry Pi'
+Als erstes müssen Sie sich entscheiden ob welcher der Pi's als "Professoren PI" und welcher als "Bewertungs PI" genutzt wird. Diese müssen dann verkabelt werden. Der "Professoren PI" benötigt das Display und einen RFID-Reader, der "Bewertungs PI" benötigt nur einen RFID-Reader. Dann sollten die Profesoren Chip Karte und die Bewertungs-Chips beschrieben werden dafür kann das write.py Skript im Ordner Grundlagen verwendet werden. Der Professoren Chip wird mit der Datenbank-ID des jeweiligen Professors beschriebn. Die Bewertungschips müssen mit den Zahlen von 1-5 beschrieben werden.
+Dann müssen die entsprechenden Skripte auf den Pi's gestartet werden. Auf dem "Professoren PI" starten Sie UI.py
 
 ```bash
 python3 UI.py
@@ -38,6 +39,8 @@ Danach starten Sie das rating.py Skript auf dem "Bewertungs PI"
 ```bash
 python3 rating.py
 ```
+
+Wenn beide Skripte ohne Probleme starten läuft FeedBecky! :)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
