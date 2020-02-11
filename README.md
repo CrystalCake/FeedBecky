@@ -1,5 +1,5 @@
 # IoTFeedbackSystem
-
+![Vorschau](https://github.com/CrystalCake/IoTFeedbackSystem/blob/master/Images/Kontrollsystem.PNG)
 ## Installation
 
 ### Hardware
