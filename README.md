@@ -29,6 +29,11 @@ Nachdem sie die MariaDB installiert haben muss der SQL-Dumb importiert werden. D
 
 ### Einrichtung der Raspberry Pi'
 Als erstes müssen Sie sich entscheiden ob welcher der Pi's als "Professoren PI" und welcher als "Bewertungs PI" genutzt wird. Diese müssen dann verkabelt werden. Der "Professoren PI" benötigt das Display und einen RFID-Reader, der "Bewertungs PI" benötigt nur einen RFID-Reader. Dann sollten die Profesoren Chip Karte und die Bewertungs-Chips beschrieben werden dafür kann das write.py Skript im Ordner Grundlagen verwendet werden. Der Professoren Chip wird mit der Datenbank-ID des jeweiligen Professors beschriebn. Die Bewertungschips müssen mit den Zahlen von 1-5 beschrieben werden.
+1:
+2:
+3:
+4:
+5:
 Dann müssen die entsprechenden Skripte auf den Pi's gestartet werden. Auf dem "Professoren PI" starten Sie UI.py
 
 ```bash
